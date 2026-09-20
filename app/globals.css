@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* design.md §3 컬러 팔레트 — 데모 범위는 라이트 모드만(다크모드 제외) */
+:root {
+  --color-bg: #ffffff;
+  --color-bg-section: #f9f9f9;
+  --color-text: #0f0f0f;
+  --color-text-secondary: #606060;
+  --color-primary: #ff0000;
+  --color-primary-hover: #cc0000;
+  --color-border: #e5e5e5;
+  --color-disabled: #cccccc;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-section: var(--color-bg-section);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-border: var(--color-border);
+  --color-disabled: var(--color-disabled);
+  --font-sans: var(--font-noto-sans-kr);
+}
+
+body {
+  background: var(--color-bg-section);
+  color: var(--color-text);
+  font-family: var(--font-sans), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
