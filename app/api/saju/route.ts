@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { analyzeSaju, SajuInputError } from "@/lib/saju/analyze";
 import { streamInterpretation } from "@/lib/gemini/interpret";
+import { saveReading } from "@/lib/supabase/readings";
 import type { BirthInput, Calendar, FortuneType, Gender } from "@/types/saju";
 
 export const runtime = "nodejs";
@@ -71,6 +72,10 @@ export async function POST(request: NextRequest) {
     }
     return Response.json({ error: "사주 계산 중 오류가 발생했습니다." }, { status: 500 });
   }
+
+  // database.md §5: 계산 직후, Gemini 해석 전에 저장. saveReading은 내부에서 에러를 삼키므로
+  // 실패해도 사용자 응답에 영향이 없고, await하지 않아 응답 시작을 늦추지도 않는다.
+  void saveReading(analysis, { gender: input.gender, fortuneType });
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
