@@ -83,10 +83,10 @@ architecture.md ── 어떻게 (기술 골격)
 - [ ] 생년월일시 저장 여부
 - [ ] 수익 모델
 
-**기술 (`architecture.md`)**
+**기술 (`architecture.md`)** — ✅ 계산·해석 레이어 구현 및 실제 Gemini 연동 확인 완료
 - [ ] 배포 플랫폼 (Vercel 등)
-- [ ] Gemini 모델/파라미터, 스트리밍 여부
-- [ ] 음력 변환 라이브러리
+- [x] ~~Gemini 모델/파라미터, 스트리밍 여부~~ → `gemini-3.6-flash`, NDJSON 스트리밍
+- [x] ~~음력 변환 라이브러리~~ → `manseryeok` 내장
 - [ ] 결과 공유(이미지) 구현
 
 **계산 엔진 (`saju-engine.md`)** — ✅ 검증 완료, `manseryeok` 채택 확정
@@ -115,6 +115,13 @@ architecture.md ── 어떻게 (기술 골격)
 1. ~~계산 엔진 검증~~ — ✅ 완료. `saju-fortune`은 실제 버그(매년 1/1~소한 월주 오류) 발견돼 미채택,
    `manseryeok`으로 전환 확정. → `saju-engine.md` §5
 2. ~~프로젝트 셋업~~ — ✅ 완료. Next.js(App Router)+TypeScript+Tailwind 스캐폴딩, `manseryeok` 설치.
-3. **톤 확정** — 서비스 성격을 좌우하는 상위 결정. → 여러 문서에 반영
-4. **지식 보강** — 십신·지지 배속 등 해석 품질의 핵심. → `domain-knowledge.md`
-5. **계산·해석 레이어 구현** — `/lib/saju` → `/lib/prompt`+`/lib/gemini` → `/api/saju` → UI
+3. ~~계산·해석 레이어 구현~~ — ✅ 완료. `/lib/saju` → `/lib/prompt`+`/lib/gemini` → `/api/saju` → UI 4화면,
+   실제 Gemini 스트리밍 응답까지 브라우저로 확인.
+4. ~~1차 엔지니어링 접근성 점검~~ — ✅ 완료(design.md §11). 실제 70세 사용자 테스트는 아직 미완료.
+5. **신규 기능 문서화** — ✅ 완료(2026-09-20). 사주 여덟 글자 카드(오행 색상)와 세운 타임라인
+   (월별·연도별)을 design.md §6, domain-knowledge.md §3-1·§11, saju-engine.md §9,
+   interpretation-prompt.md §2-1에 반영. **구현은 아직**.
+6. **톤 확정** — 서비스 성격을 좌우하는 상위 결정. → 여러 문서에 반영
+7. **지식 보강** — 십신·지지 배속 등 해석 품질의 핵심. → `domain-knowledge.md`
+8. **신규 기능 구현** — 사주 여덟 글자 카드 → 세운 타임라인 순으로 UI/계산 구현 (§5 참고)
+9. **실사용자 테스트** — 70세 사용자(아버님) 대상 실제 테스트 (design.md §10)

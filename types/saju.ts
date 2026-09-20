@@ -21,9 +21,27 @@ export interface AnalyzeOptions {
   targetYear?: number;
 }
 
+/** 글자 하나(천간 또는 지지)의 표시 정보 — design.md §6 "사주 여덟 글자 카드" */
+export interface SajuCharacter {
+  hangul: string; // 예: "경"
+  hanja: string; // 예: "庚"
+  element: FiveElementKey;
+}
+
 export interface PillarView {
   label: string; // 한글 간지, 예: "경오"
   hanja: string; // 한자 간지, 예: "庚午"
+  stem: SajuCharacter;
+  branch: SajuCharacter;
+}
+
+/** 세운·월운 타임라인 한 항목 — saju-engine.md §9 */
+export interface TimelineEntry {
+  key: string; // "2026" 또는 "2026-03"
+  displayLabel: string; // "2026년" 또는 "2026년 3월"
+  isCurrent: boolean;
+  pillar: PillarView;
+  tenGod: TenGodPillar;
 }
 
 export interface FiveElementCounts {
@@ -79,6 +97,9 @@ export interface SajuAnalysis {
   voidBranches: string[];
   timeAccuracy: "known" | "unknown";
   limitations: string[];
+  /** "오늘"을 중심으로 한 세운·월운 타임라인 — 생년월일과 무관, 일간에만 의존 (saju-engine.md §9) */
+  monthlyTimeline: TimelineEntry[];
+  yearlyTimeline: TimelineEntry[];
 }
 
 export interface FortuneResult {

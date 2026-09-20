@@ -1,6 +1,13 @@
-import { getEarthlyBranchElement, getHeavenlyStemElement } from "manseryeok";
-import type { FourPillars, FiveElement as ManFiveElement } from "manseryeok";
-import type { DayMasterView, FiveElementCounts, FiveElementKey, YongsinView } from "@/types/saju";
+import {
+  EARTHLY_BRANCHES,
+  EARTHLY_BRANCHES_HANJA,
+  HEAVENLY_STEMS,
+  HEAVENLY_STEMS_HANJA,
+  getEarthlyBranchElement,
+  getHeavenlyStemElement
+} from "manseryeok";
+import type { EarthlyBranch, FourPillars, HeavenlyStem, FiveElement as ManFiveElement, Pillar } from "manseryeok";
+import type { DayMasterView, FiveElementCounts, FiveElementKey, PillarView, SajuCharacter, YongsinView } from "@/types/saju";
 
 const ELEMENT_KO_TO_KEY: Record<ManFiveElement, FiveElementKey> = {
   목: "wood",
@@ -103,4 +110,35 @@ export function elementKoLabel(element: FiveElementKey): string {
 
 export function elementKeyFromKo(elementKo: ManFiveElement): FiveElementKey {
   return ELEMENT_KO_TO_KEY[elementKo];
+}
+
+/** design.md §6 "사주 여덟 글자 카드": 천간 한 글자의 한자·오행 표시 정보 */
+export function stemCharacter(stem: HeavenlyStem): SajuCharacter {
+  const index = HEAVENLY_STEMS.indexOf(stem);
+  return {
+    hangul: stem,
+    hanja: HEAVENLY_STEMS_HANJA[index],
+    element: elementKeyFromKo(getHeavenlyStemElement(stem))
+  };
+}
+
+/** design.md §6 "사주 여덟 글자 카드": 지지 한 글자의 한자·오행 표시 정보 */
+export function branchCharacter(branch: EarthlyBranch): SajuCharacter {
+  const index = EARTHLY_BRANCHES.indexOf(branch);
+  return {
+    hangul: branch,
+    hanja: EARTHLY_BRANCHES_HANJA[index],
+    element: elementKeyFromKo(getEarthlyBranchElement(branch))
+  };
+}
+
+export function toPillarView(pillar: Pillar): PillarView {
+  const stem = stemCharacter(pillar.heavenlyStem);
+  const branch = branchCharacter(pillar.earthlyBranch);
+  return {
+    label: `${stem.hangul}${branch.hangul}`,
+    hanja: `${stem.hanja}${branch.hanja}`,
+    stem,
+    branch
+  };
 }

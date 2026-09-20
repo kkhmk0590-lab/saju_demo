@@ -166,8 +166,9 @@ GEMINI_API_KEY=xxxxxxxx
 
 ## 8. 미결정 사항 (Decisions Needed)
 - [ ] 배포 플랫폼 확정 (Vercel 등)
-- [ ] Gemini 모델 버전/파라미터 선택
-- [ ] 응답 방식: 스트리밍 vs 일괄
+- [x] ~~Gemini 모델 버전/파라미터 선택~~ → 기본값 `gemini-3.6-flash`(env `GEMINI_MODEL`로 교체 가능),
+      temperature 0.7. `gemini-2.5-flash`는 서비스 종료되어 API가 직접 이 모델로 안내함(2026-09-20 확인).
+- [x] ~~응답 방식: 스트리밍 vs 일괄~~ → 스트리밍(NDJSON) 채택, `/api/saju` 구현 완료
 - [x] ~~음력 변환 라이브러리 선정~~ → `manseryeok` 내장 KASI 변환 사용 (`saju-engine.md` §4)
 - [x] ~~`manseryeok` 패키지 채택 확정~~ → 채택 확정 (`saju-engine.md` §5)
 - [ ] 결과 공유(이미지 저장) 구현 방식

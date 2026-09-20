@@ -7,9 +7,11 @@ import {
   getDominantElements,
   getWeakElements,
   estimateDayMasterStrength,
-  selectYongsin
+  selectYongsin,
+  toPillarView
 } from "@/lib/saju/elements";
-import type { BirthInput, PillarView, SajuAnalysis, TenGodPillar } from "@/types/saju";
+import { buildMonthlyTimeline, buildYearlyTimeline } from "@/lib/saju/timeline";
+import type { BirthInput, SajuAnalysis, TenGodPillar } from "@/types/saju";
 
 const UNKNOWN_TIME_LIMITATION =
   "태어난 시간이 없어 시주는 확정하지 않고 연·월·일 중심으로 보수적으로 해석합니다.";
@@ -36,10 +38,6 @@ function parseBirthTime(value: string): { hour: number; minute: number } {
     throw new SajuInputError("태어난 시각 범위가 올바르지 않습니다.");
   }
   return { hour, minute };
-}
-
-function toPillarView(korean: string, hanja: string): PillarView {
-  return { label: korean, hanja };
 }
 
 /**
@@ -101,10 +99,10 @@ export function analyzeSaju(input: BirthInput): SajuAnalysis {
   return {
     input,
     pillars: {
-      year: toPillarView(result.yearString, result.yearHanja),
-      month: toPillarView(result.monthString, result.monthHanja),
-      day: toPillarView(result.dayString, result.dayHanja),
-      hour: hasTime ? toPillarView(result.hourString, result.hourHanja) : null
+      year: toPillarView(result.year),
+      month: toPillarView(result.month),
+      day: toPillarView(result.day),
+      hour: hasTime ? toPillarView(result.hour) : null
     },
     dayMaster: {
       stem: dayMaster.stem,
@@ -119,6 +117,8 @@ export function analyzeSaju(input: BirthInput): SajuAnalysis {
     tenGods,
     voidBranches: result.voidBranches,
     timeAccuracy,
-    limitations
+    limitations,
+    monthlyTimeline: buildMonthlyTimeline(result.day.heavenlyStem),
+    yearlyTimeline: buildYearlyTimeline(result.day.heavenlyStem)
   };
 }

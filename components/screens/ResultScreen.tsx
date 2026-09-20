@@ -1,5 +1,7 @@
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
+import { PillarCard } from "@/components/PillarCard";
+import { TimelineSection } from "@/components/TimelineSection";
 import type { SajuAnalysis } from "@/types/saju";
 
 interface ResultScreenProps {
@@ -11,24 +13,22 @@ interface ResultScreenProps {
   onHome: () => void;
 }
 
-/** design.md §9 결과 화면. */
+/** design.md §6 결과 화면 순서: ① 사주 여덟 글자 카드 → ② 세운 타임라인 → ③ 해석 텍스트. */
 export function ResultScreen({ analysis, interpretation, isStreaming, errorMessage, onRetryInput, onHome }: ResultScreenProps) {
   const [birthYear, birthMonth] = analysis.input.birthDate.split("-");
-  const { pillars } = analysis;
 
   return (
     <div className="flex flex-col gap-4">
-      <Card className="flex flex-col gap-4">
-        <h2 className="text-[26px] font-bold">
+      <Card>
+        <h2 className="mb-4 text-[26px] font-bold">
           {birthYear}년 {Number(birthMonth)}월생 사주 결과
         </h2>
+        <PillarCard analysis={analysis} />
+      </Card>
 
-        <div className="flex flex-wrap gap-x-6 gap-y-1 text-base text-[var(--color-text-secondary)]">
-          <span>연주 {pillars.year.label}({pillars.year.hanja})</span>
-          <span>월주 {pillars.month.label}({pillars.month.hanja})</span>
-          <span>일주 {pillars.day.label}({pillars.day.hanja})</span>
-          <span>시주 {pillars.hour ? `${pillars.hour.label}(${pillars.hour.hanja})` : "미상"}</span>
-        </div>
+      <Card className="flex flex-col gap-6">
+        <TimelineSection title="월별 세운" entries={analysis.monthlyTimeline} />
+        <TimelineSection title="연도별 세운" entries={analysis.yearlyTimeline} />
       </Card>
 
       <Card>

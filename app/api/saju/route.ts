@@ -86,8 +86,12 @@ export async function POST(request: NextRequest) {
         }
         controller.enqueue(ndjson({ type: "done" }));
       } catch (error) {
-        const message = error instanceof Error ? error.message : "해석 생성 중 오류가 발생했습니다.";
-        controller.enqueue(ndjson({ type: "error", message }));
+        // design.md §2 "오류 메시지는 쉬운 말로": Gemini/SDK 원시 에러(영문 JSON 등)를
+        // 그대로 노출하지 않는다. 상세 내용은 서버 로그로만 남긴다.
+        console.error("[api/saju] interpretation stream failed:", error);
+        controller.enqueue(
+          ndjson({ type: "error", message: "풀이를 만드는 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요." })
+        );
       } finally {
         controller.close();
       }
